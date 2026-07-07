@@ -1,1 +1,1 @@
-This directory contains the hello world tasks
+This directory contains the hello_world project tasks.
