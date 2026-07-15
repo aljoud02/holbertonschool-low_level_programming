@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 /**
- * add - Adds two numbers
+ * add - Adds two integers
  * @a: First number
  * @b: Second number
  *
@@ -13,7 +13,7 @@ int add(int a, int b)
 }
 
 /**
- * subtract - Subtracts the second number from the first
+ * subtract - Subtracts the second integer from the first
  * @a: First number
  * @b: Second number
  *
@@ -25,7 +25,7 @@ int subtract(int a, int b)
 }
 
 /**
- * multiply - Multiplies two numbers
+ * multiply - Multiplies two integers
  * @a: First number
  * @b: Second number
  *
@@ -37,26 +37,26 @@ int multiply(int a, int b)
 }
 
 /**
- * divide - Divides the first number by the second
+ * divide - Divides the first integer by the second as a double
  * @a: First number
  * @b: Second number
  *
  * Return: Result of a / b
  */
-int divide(int a, int b)
+double divide(int a, int b)
 {
-	return (a / b);
+	return ((double)a / b);
 }
 
 /**
- * main - Entry point for the menu-driven simple calculator
+ * main - Entry point for the simple calculator
  *
  * Return: Always 0 (Success)
  */
 int main(void)
 {
 	int choice;
-	int num1, num2, result;
+	int a, b;
 
 	do {
 		printf("Simple Calculator\n");
@@ -75,42 +75,38 @@ int main(void)
 			break;
 		}
 
-		if (choice < 1 || choice > 4)
+		if (choice < 0 || choice > 4)
 		{
-			printf("Invalid option. Please try again.\n\n");
+			printf("Invalid choice\n");
 			continue;
 		}
 
-		printf("Enter first number: ");
-		scanf("%d", &num1);
-		printf("Enter second number: ");
-		scanf("%d", &num2);
+		printf("A: ");
+		scanf("%d", &a);
+		printf("B: ");
+		scanf("%d", &b);
 
 		if (choice == 1)
 		{
-			result = add(num1, num2);
-			printf("Result: %d\n\n", result);
+			printf("Result: %d\n", add(a, b));
 		}
 		else if (choice == 2)
 		{
-			result = subtract(num1, num2);
-			printf("Result: %d\n\n", result);
+			printf("Result: %d\n", subtract(a, b));
 		}
 		else if (choice == 3)
 		{
-			result = multiply(num1, num2);
-			printf("Result: %d\n\n", result);
+			printf("Result: %d\n", multiply(a, b));
 		}
 		else if (choice == 4)
 		{
-			if (num2 == 0)
+			if (b == 0)
 			{
-				printf("Error: Division by zero is undefined.\n\n");
+				printf("Error: division by zero\n");
 			}
 			else
 			{
-				result = divide(num1, num2);
-				printf("Result: %d\n\n", result);
+				printf("Result: %g\n", divide(a, b));
 			}
 		}
 
