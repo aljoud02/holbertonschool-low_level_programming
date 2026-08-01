@@ -11,4 +11,6 @@ This project focuses on understanding and manipulating command-line arguments in
 ## Tasks
 * **0-whatsmyname.c:** A program that prints its name, followed by a new line.
 * **2-args.c**: A program that prints all arguments it receives, including the first one, one per line.
+* **3-mul.c**: A program that multiplies two numbers passed as arguments, prints the result, or prints `Error` if arguments are invalid.
+* **4-add.c**: A program that adds positive numbers passed as arguments, checks for non-digit symbols, or prints `Error`.
 
