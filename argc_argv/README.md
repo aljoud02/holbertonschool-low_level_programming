@@ -10,4 +10,5 @@ This project focuses on understanding and manipulating command-line arguments in
 
 ## Tasks
 * **0-whatsmyname.c:** A program that prints its name, followed by a new line.
+* **2-args.c**: A program that prints all arguments it receives, including the first one, one per line.
 
