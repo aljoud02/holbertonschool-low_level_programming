@@ -3,8 +3,8 @@
 #include "store.h"
 
 /**
- * store_init - Initializes the data store
- * @st: Pointer to store structures
+ * store_init - Safely initializes the store linked list head
+ * @st: Pointer to store structure
  */
 void store_init(store_t *st)
 {
@@ -13,10 +13,10 @@ void store_init(store_t *st)
 }
 
 /**
- * node_create - Helper function to allocate node safely
- * @s: Pointer to session
+ * node_create - Helper logic to instantiate an internal list node safely
+ * @s: Pointer to session object to bind
  *
- * Return: Pointer to node_t, or NULL if it fails
+ * Return: Pointer to node_t node, or NULL if heap exhaustion occurs
  */
 static node_t *node_create(session_t *s)
 {
@@ -30,11 +30,11 @@ static node_t *node_create(session_t *s)
 }
 
 /**
- * store_add - Adds a session to the store preventing duplicate keys
- * @st: Pointer to store
- * @s: Pointer to session to add
+ * store_add - Hardens store insertion by guaranteeing failure memory cleanups
+ * @st: Pointer to central store structure
+ * @s: Pointer to allocated session object
  *
- * Return: 1 if added, 0 if duplicate or failure (frees session on failure)
+ * Return: 1 if added, 0 on failure (ensures session is fully freed)
  */
 int store_add(store_t *st, session_t *s)
 {
@@ -71,11 +71,11 @@ int store_add(store_t *st, session_t *s)
 }
 
 /**
- * store_get - Retrieves a session by id
+ * store_get - Retrieves a session by its string key identifier
  * @st: Pointer to store
- * @id: Target session ID string
+ * @id: Target session ID string lookup
  *
- * Return: Pointer to session_t, or NULL if not found
+ * Return: Pointer to bounded session_t, or NULL if not found
  */
 session_t *store_get(store_t *st, const char *id)
 {
@@ -95,12 +95,12 @@ session_t *store_get(store_t *st, const char *id)
 }
 
 /**
- * store_delete - Deletes a session by id without dangling pointers
+ * store_delete - Contextual deletion separating destroy from ownership handoff
  * @st: Pointer to store
  * @id: Target session ID string
- * @out: Optional out pointer to transfer ownership of the session
+ * @out: Optional external double pointer to intercept session lifecycle
  *
- * Return: 1 if deleted, 0 if not found
+ * Return: 1 if successfully isolated, 0 if target ID lookup misses
  */
 int store_delete(store_t *st, const char *id, session_t **out)
 {
@@ -122,13 +122,9 @@ int store_delete(store_t *st, const char *id, session_t **out)
 				st->head = cur->next;
 
 			if (out)
-			{
 				*out = cur->sess;
-			}
 			else
-			{
 				session_destroy(cur->sess);
-			}
 
 			free(cur);
 			return (1);
@@ -141,8 +137,8 @@ int store_delete(store_t *st, const char *id, session_t **out)
 }
 
 /**
- * store_destroy - Cleans up the entire store and its sessions
- * @st: Pointer to store
+ * store_destroy - Full repeatable lifecycle teardown resetting invariants
+ * @st: Pointer to store to dismantle
  */
 void store_destroy(store_t *st)
 {

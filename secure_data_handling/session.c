@@ -3,13 +3,13 @@
 #include "session.h"
 
 /**
- * session_create - Allocates and initializes a new session securely
- * @id: The input identifier string
- * @uid: User id
- * @data: Byte array data
- * @data_len: Length of data
+ * session_create - Creates a new session securely with self-contained ownership
+ * @id: Pointer to caller-provided ID string
+ * @uid: User identifier
+ * @data: Pointer to caller-provided data byte array
+ * @data_len: Length of the data buffer
  *
- * Return: Pointer to session_t, or NULL if allocation fails
+ * Return: Pointer to allocated session_t, or NULL if any allocation fails
  */
 session_t *session_create(const char *id, unsigned int uid,
 			  const unsigned char *data, size_t data_len)
@@ -54,12 +54,12 @@ session_t *session_create(const char *id, unsigned int uid,
 }
 
 /**
- * session_set_data - Updates data buffer safely without losing pointers
- * @s: Pointer to session
- * @data: New data bytes
- * @data_len: New data length
+ * session_set_data - Updates a session's data buffer safely without leaks
+ * @s: Pointer to target session_t structure
+ * @data: Pointer to the new data bytes
+ * @data_len: New data buffer length
  *
- * Return: 1 if successful, 0 otherwise
+ * Return: 1 if successful, 0 if allocation fails (leaves original data intact)
  */
 int session_set_data(session_t *s, const unsigned char *data, size_t data_len)
 {
@@ -87,8 +87,8 @@ int session_set_data(session_t *s, const unsigned char *data, size_t data_len)
 }
 
 /**
- * session_destroy - Safely deallocates all session memory
- * @s: Pointer to session
+ * session_destroy - Safely dismantles a self-contained session object
+ * @s: Pointer to session_t to release
  */
 void session_destroy(session_t *s)
 {
